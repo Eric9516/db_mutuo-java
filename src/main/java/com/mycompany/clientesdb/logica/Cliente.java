@@ -195,10 +195,11 @@ public class Cliente implements Serializable {
 
     }
 
-    public void SeleccionarCliente(JTable paramTablaClientes, JTextField paramNombre, JTextField paramApellido, JTextField paramDomicilio, JTextField paramTelefono, JTextField paramLocalidad, JTextArea paramObservaciones, JTextField paramNumCliente) {
+    public void SeleccionarCliente(JTable paramTablaClientes,JTextField paramId, JTextField paramNombre, JTextField paramApellido, JTextField paramDomicilio, JTextField paramTelefono, JTextField paramLocalidad, JTextArea paramObservaciones, JTextField paramNumCliente) {
         try {
             int fila = paramTablaClientes.getSelectedRow();
             if (fila >= 0) {
+                paramId.setText(paramTablaClientes.getValueAt(fila, 0).toString());
                 paramNombre.setText(paramTablaClientes.getValueAt(fila, 1).toString());
                 paramApellido.setText(paramTablaClientes.getValueAt(fila, 2).toString());
                 paramDomicilio.setText(paramTablaClientes.getValueAt(fila, 3).toString());
@@ -215,4 +216,54 @@ public class Cliente implements Serializable {
         }
     }
 
+    public void ModificarCliente(JTextField paramId,JTextField paramNombre, JTextField paramApellido, JTextField paramDomicilio, JTextField paramTelefono, JTextField paramLocalidad, JTextArea paramObservaciones, JTextField paramNumCliente) {
+        setId_cliente(Integer.parseInt(paramId.getText()));
+        setNombre(paramNombre.getText());
+        setApellido(paramApellido.getText());
+        setDireccion(paramDomicilio.getText());
+        setLocalidad(paramLocalidad.getText());
+        setTelefono(paramTelefono.getText());
+        setObservaciones(paramObservaciones.getText());
+        setNumero_cliente(paramNumCliente.getText());
+
+        Conexion objetoConexion = new Conexion();
+
+        String consulta = "UPDATE clientes SET clientes.nombre = ?, clientes.apellido = ?, clientes.domicilio = ?, clientes.telefono = ?, clientes.localidad = ?, clientes.observaciones = ?,clientes.numeroCliente = ? WHERE clientes.id = ?;";
+   
+        try{
+            CallableStatement cs = objetoConexion.establecerConexion().prepareCall(consulta);
+            
+            cs.setString(1, getNombre());
+            cs.setString(2, getApellido());
+            cs.setString(3, getDireccion());
+            cs.setString(4, getTelefono());
+            cs.setString(5, getLocalidad());
+            cs.setString(6, getObservaciones());
+            cs.setString(7, getNumero_cliente());
+            cs.setInt(8, getId_cliente());
+            
+            cs.execute();
+            
+            JOptionPane.showMessageDialog(null, "Modificacion exitosa");
+        }catch (HeadlessException | SQLException e) {
+            JOptionPane.showMessageDialog(null, "No se pudo modificar el cliente, error: " + e.toString());
+        }
+    }
+
+        public void EliminarCliente(JTextField paramId){
+            setId_cliente(Integer.parseInt(paramId.getText()));
+            
+            Conexion objetoConexion = new Conexion();
+            
+            String consulta = "DELETE FROM clientes where clientes.id = ?;";
+            
+            try{
+             CallableStatement cs = objetoConexion.establecerConexion().prepareCall(consulta);
+             cs.setInt(1, getId_cliente());
+             cs.execute();
+             JOptionPane.showMessageDialog(null, "El cliente se ha eliminado correctamente");
+            }catch (HeadlessException | SQLException e) {
+                JOptionPane.showMessageDialog(null, "No se ha podido eliminar el cliente, error: "+ e.toString());
+            }   
+        }
 }
