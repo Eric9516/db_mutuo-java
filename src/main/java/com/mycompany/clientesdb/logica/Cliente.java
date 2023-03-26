@@ -183,17 +183,36 @@ public class Cliente implements Serializable {
                 datos[5] = rs.getString(6);
                 datos[6] = rs.getString(7);
                 datos[7] = rs.getString(8);
-         
-                
+
                 modelo.addRow(datos);
             }
-            
+
             paramTablaTotalClientes.setModel(modelo);
 
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "No se pudieron mostrar los registros: " + e.toString());
         }
 
+    }
+
+    public void SeleccionarCliente(JTable paramTablaClientes, JTextField paramNombre, JTextField paramApellido, JTextField paramDomicilio, JTextField paramTelefono, JTextField paramLocalidad, JTextArea paramObservaciones, JTextField paramNumCliente) {
+        try {
+            int fila = paramTablaClientes.getSelectedRow();
+            if (fila >= 0) {
+                paramNombre.setText(paramTablaClientes.getValueAt(fila, 1).toString());
+                paramApellido.setText(paramTablaClientes.getValueAt(fila, 2).toString());
+                paramDomicilio.setText(paramTablaClientes.getValueAt(fila, 3).toString());
+                paramTelefono.setText(paramTablaClientes.getValueAt(fila, 4).toString());
+                paramLocalidad.setText(paramTablaClientes.getValueAt(fila, 5).toString());
+                paramObservaciones.setText(paramTablaClientes.getValueAt(fila, 6).toString());
+                paramNumCliente.setText(paramTablaClientes.getValueAt(fila, 7).toString());
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Fila no seleccionada");
+            }
+        } catch (HeadlessException e) {
+            JOptionPane.showMessageDialog(null, "Error de seleccion, error: " + e.toString());
+        }
     }
 
 }
