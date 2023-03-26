@@ -25,6 +25,7 @@ public class Cliente implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id_cliente;
+    private String dni;
     private String numero_cliente;
     private String nombre;
     private String apellido;
@@ -36,9 +37,10 @@ public class Cliente implements Serializable {
     public Cliente() {
     }
 
-    public Cliente(int id_cliente, String numero_cliente, String nombre, String apellido, String direccion, String localidad, String telefono, String observaciones) {
+    public Cliente(int id_cliente, String numero_cliente, String nombre, String apellido, String direccion, String localidad, String telefono, String observaciones,String dni) {
         this.id_cliente = id_cliente;
         this.numero_cliente = numero_cliente;
+        this.dni = dni;
         this.nombre = nombre;
         this.apellido = apellido;
         this.direccion = direccion;
@@ -53,6 +55,14 @@ public class Cliente implements Serializable {
 
     public void setId_cliente(int id_cliente) {
         this.id_cliente = id_cliente;
+    }
+    
+    public String getDni() {
+        return dni;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
     }
 
     public String getNumero_cliente() {
@@ -111,7 +121,7 @@ public class Cliente implements Serializable {
         this.observaciones = observaciones;
     }
 
-    public void InsertarCliente(JTextField paramNombre, JTextField paramApellido, JTextField paramDomicilio, JTextField paramTelefono, JTextField paramLocalidad, JTextArea paramObservaciones, JTextField paramNumCliente) throws SQLException {
+    public void InsertarCliente(JTextField paramNombre, JTextField paramApellido, JTextField paramDomicilio, JTextField paramTelefono, JTextField paramLocalidad, JTextArea paramObservaciones, JTextField paramNumCliente, JTextField paramDni) throws SQLException {
         setNombre(paramNombre.getText());
         setApellido(paramApellido.getText());
         setDireccion(paramDomicilio.getText());
@@ -119,10 +129,11 @@ public class Cliente implements Serializable {
         setTelefono(paramTelefono.getText());
         setObservaciones(paramObservaciones.getText());
         setNumero_cliente(paramNumCliente.getText());
+        setDni(paramDni.getText());
 
         Conexion objetoConexion = new Conexion();
 
-        String consulta = "insert into clientes (nombre,apellido,domicilio,telefono,localidad,observaciones,numeroCLiente) values (?,?,?,?,?,?,?);";
+        String consulta = "insert into clientes (nombre,apellido,domicilio,telefono,localidad,observaciones,numeroCLiente, dni) values (?,?,?,?,?,?,?,?);";
 
         try {
             CallableStatement cs = objetoConexion.establecerConexion().prepareCall(consulta);
@@ -133,6 +144,7 @@ public class Cliente implements Serializable {
             cs.setString(5, getLocalidad());
             cs.setString(6, getObservaciones());
             cs.setString(7, getNumero_cliente());
+            cs.setString(8, getDni());
 
             cs.execute();
 
@@ -162,12 +174,13 @@ public class Cliente implements Serializable {
         modelo.addColumn("Localidad");
         modelo.addColumn("Observaciones");
         modelo.addColumn("Numero de cliente");
+        modelo.addColumn("DNI");
 
         paramTablaTotalClientes.setModel(modelo);
 
         sql = "select * from clientes";
 
-        String[] datos = new String[8];
+        String[] datos = new String[9];
         Statement st;
 
         try {
@@ -183,6 +196,7 @@ public class Cliente implements Serializable {
                 datos[5] = rs.getString(6);
                 datos[6] = rs.getString(7);
                 datos[7] = rs.getString(8);
+                datos[8] = rs.getString(9);
 
                 modelo.addRow(datos);
             }
@@ -195,7 +209,7 @@ public class Cliente implements Serializable {
 
     }
 
-    public void SeleccionarCliente(JTable paramTablaClientes,JTextField paramId, JTextField paramNombre, JTextField paramApellido, JTextField paramDomicilio, JTextField paramTelefono, JTextField paramLocalidad, JTextArea paramObservaciones, JTextField paramNumCliente) {
+    public void SeleccionarCliente(JTable paramTablaClientes,JTextField paramId, JTextField paramNombre, JTextField paramApellido, JTextField paramDomicilio, JTextField paramTelefono, JTextField paramLocalidad, JTextArea paramObservaciones, JTextField paramNumCliente, JTextField paramDni) {
         try {
             int fila = paramTablaClientes.getSelectedRow();
             if (fila >= 0) {
@@ -207,6 +221,7 @@ public class Cliente implements Serializable {
                 paramLocalidad.setText(paramTablaClientes.getValueAt(fila, 5).toString());
                 paramObservaciones.setText(paramTablaClientes.getValueAt(fila, 6).toString());
                 paramNumCliente.setText(paramTablaClientes.getValueAt(fila, 7).toString());
+                paramDni.setText(paramTablaClientes.getValueAt(fila, 8).toString());
 
             } else {
                 JOptionPane.showMessageDialog(null, "Fila no seleccionada");
