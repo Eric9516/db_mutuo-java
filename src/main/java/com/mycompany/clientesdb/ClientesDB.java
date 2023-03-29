@@ -20,7 +20,7 @@ public class ClientesDB {
             splash.setLocationRelativeTo(null);
 
             try {
-                Thread.sleep(3000);
+                Thread.sleep(3500);
             } catch (InterruptedException ex) {
                 Logger.getLogger(ClientesDB.class.getName()).log(Level.SEVERE, null, ex);
             }

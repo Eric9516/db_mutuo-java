@@ -1,6 +1,8 @@
 package com.mycompany.clientesdb.igu;
 
 import com.mycompany.clientesdb.logica.Cliente;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -9,7 +11,13 @@ public class CargaDatos extends javax.swing.JFrame {
 
     public CargaDatos() {
         initComponents();
+        setIconImage(getIconImage());
         this.setTitle("Cargar datos");
+    }
+
+    @Override
+    public Image getIconImage() {
+        return Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("M.png"));
     }
 
     @SuppressWarnings("unchecked")
@@ -74,7 +82,7 @@ public class CargaDatos extends javax.swing.JFrame {
         jLabel8.setText("N° Cliente:");
 
         btnGuardar.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        btnGuardar.setIcon(new javax.swing.ImageIcon("C:\\Users\\agus_\\OneDrive\\Desktop\\guardar.png")); // NOI18N
+        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/guardar.png"))); // NOI18N
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -83,7 +91,7 @@ public class CargaDatos extends javax.swing.JFrame {
         });
 
         btnLimpiar.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        btnLimpiar.setIcon(new javax.swing.ImageIcon("C:\\Users\\agus_\\OneDrive\\Desktop\\limpiar.png")); // NOI18N
+        btnLimpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/limpiar.png"))); // NOI18N
         btnLimpiar.setText("Limpiar");
         btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
